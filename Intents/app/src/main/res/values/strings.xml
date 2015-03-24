@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Intents</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="send">Send</string>
+    <string name="title_activity_message">MessageActivity</string>
+    <string name="txtPhoto">Photo</string>
+    <string name="no_text">No hay texto</string>
+</resources>
