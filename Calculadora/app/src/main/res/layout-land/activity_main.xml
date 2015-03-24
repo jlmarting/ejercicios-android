@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="com.jlmarting.calculadora.numbersPad"
+        android:id="@+id/fragment4"
+        tools:layout="@layout/fragment_numbers_pad"
+        android:tag="numbers"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="128dp" />
+
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="com.jlmarting.calculadora.opsPad"
+        android:id="@+id/fragment5"
+        tools:layout="@layout/fragment_ops_pad"
+        android:tag="ops"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/fragment4" />
+
+    <fragment
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:name="com.jlmarting.calculadora.screen"
+        android:id="@+id/fragment6"
+        android:layout_alignParentTop="true"
+        tools:layout="@layout/fragment_screen"
+        android:layout_above="@+id/fragment4"
+        android:layout_alignStart="@+id/fragment4"
+        android:layout_alignEnd="@+id/fragment5" />
+</RelativeLayout>

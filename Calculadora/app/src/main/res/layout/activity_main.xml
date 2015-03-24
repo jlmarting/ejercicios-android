@@ -6,176 +6,32 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
     android:id="@+id/mainLayout">
 
-    <GridLayout
+
+    <fragment
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnCount="5"
-        android:rowCount="5"
-        android:id="@+id/gridLayout"
+        android:name="com.jlmarting.calculadora.numbersPad"
+        android:id="@+id/fragment"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        tools:layout="@layout/fragment_numbers_pad" />
 
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="com.jlmarting.calculadora.opsPad"
+        android:id="@+id/fragment2"
+        android:layout_alignBottom="@+id/fragment"
+        android:layout_toEndOf="@+id/fragment"
+        tools:layout="@layout/fragment_ops_pad" />
 
-        <Button
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:text="."
-        android:id="@+id/btnPoint"
-        android:layout_row="3"
-        android:layout_column="0" />
-
-        <Button
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="0"
-            android:id="@+id/btnNum0"
-            android:layout_row="3"
-            android:layout_column="1" />
-
-        <Button
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="1"
-            android:id="@+id/btnNum1"
-            android:layout_row="2"
-            android:layout_column="0" />
-
-        <Button
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="2"
-            android:id="@+id/btnNum2"
-            android:layout_row="2"
-            android:layout_column="1" />
-        <Button
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="3"
-            android:id="@+id/btnNum3"
-            android:layout_row="2"
-            android:layout_column="2" />
-
-        <Button
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="4"
-            android:id="@+id/btnNum4"
-            android:layout_row="1"
-            android:layout_column="0" />
-
-        <Button
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="5"
-            android:id="@+id/btnNum5"
-            android:layout_row="1"
-            android:layout_column="1" />
-
-        <Button
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="6"
-            android:id="@+id/btnNum6"
-            android:layout_row="1"
-            android:layout_column="2" />
-
-        <Button
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="7"
-            android:id="@+id/btnNum7"
-            android:layout_row="0"
-            android:layout_column="0" />
-
-        <Button
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="8"
-            android:id="@+id/btnNum8"
-            android:layout_row="0"
-            android:layout_column="1" />
-        <Button
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="9"
-            android:id="@+id/btnNum9"
-            android:layout_row="0"
-            android:layout_column="2" />
-
-        <Button
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="="
-            android:id="@+id/btnResult"
-            android:layout_row="3"
-            android:layout_column="2" />
-
-
-    </GridLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text=""
-        android:id="@+id/screen"
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="com.jlmarting.calculadora.screen"
+        android:id="@+id/fragment3"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_weight="0.07"
-        android:layout_above="@+id/gridLayout" />
-
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/gridLayout"
-        android:layout_toEndOf="@+id/gridLayout"
-        android:rowCount="6"
-        android:columnCount="3"
-        android:layout_alignTop="@+id/gridLayout">
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="75dp"
-            android:text="+"
-            android:id="@+id/btnAdd"
-            android:layout_centerVertical="true"
-            android:layout_alignEnd="@+id/btnSub"
-            android:layout_row="0"
-            android:layout_column="1" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="75dp"
-            android:text="-"
-            android:id="@+id/btnSub"
-            android:layout_below="@+id/btnAdd"
-            android:layout_alignStart="@+id/btnMul"
-            android:layout_row="1"
-            android:layout_column="1" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:text="/"
-            android:id="@+id/btnDiv"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/btnMul"
-            android:layout_row="3"
-            android:layout_column="1" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="75dp"
-            android:text="*"
-            android:id="@+id/btnMul"
-            android:layout_below="@+id/btnSub"
-            android:layout_alignEnd="@+id/textView"
-            android:layout_row="2"
-            android:layout_column="1" />
-
-    </GridLayout>
-
-
+        tools:layout="@layout/fragment_screen"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
