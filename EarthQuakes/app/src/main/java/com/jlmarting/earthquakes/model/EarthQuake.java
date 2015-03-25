@@ -11,6 +11,11 @@ public class EarthQuake {
     private Date date;
     private double magnitude;
     private String place;
+    private String url;
+
+    public EarthQuake() {
+
+    }
 
     public EarthQuake(String _id, Coordinate coords, Date date, double magnitude, String place) {
         this._id = _id;
@@ -18,8 +23,20 @@ public class EarthQuake {
         this.date = date;
         this.magnitude = magnitude;
         this.place = place;
+
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setDate(int date){
+       this.date = new Date(date);
+   }
     @Override
     public String toString() {
         return this.getPlace();
