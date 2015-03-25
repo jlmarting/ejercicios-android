@@ -3,7 +3,6 @@ package com.jlmarting.earthquakes.tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.jlmarting.earthquakes.R;
 import com.jlmarting.earthquakes.model.Coordinate;
 import com.jlmarting.earthquakes.model.EarthQuake;
 
