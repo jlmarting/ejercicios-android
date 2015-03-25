@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.jlmarting.earthquakes.dummy.DummyContent;
 import com.jlmarting.earthquakes.model.Coordinate;
 import com.jlmarting.earthquakes.model.EarthQuake;
+import com.jlmarting.earthquakes.tasks.DownloadEarthQuakesTask;
 
 import org.apache.http.HttpConnection;
 import org.json.JSONArray;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-public class EarthQuakeListFragment extends ListFragment {
+public class EarthQuakeListFragment extends ListFragment implements DownloadEarthQuakesTask.AddEarthQuakeInterface{
     private JSONObject json;
     private ArrayList<EarthQuake> earthQuakes;
     private ArrayAdapter<EarthQuake> aa;
@@ -46,19 +47,25 @@ public class EarthQuakeListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         earthQuakes = new ArrayList<>();
+        /*
+        Debería dar fallo, dado que desde el thread no
+        es posible acceder a la vista
+        Ya no nos será util, usaremos el AsyncTask
+        DownloadEarthQuakesTask que hemos creado
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                /*
-                Debería dar fallo, dado que desde el thread no
-                es posible acceder a la vista
-                 */
+
                 updateEarthQuakes();
             }
         });
 
-       t.start();
+       t.start();               */
+
+        DownloadEarthQuakesTask task = new DownloadEarthQuakesTask(this);
+        //los asynctask se ponen en marcha con execute
+        task.execute(getString(R.string.earthquakes_url));
     }
 
     @Override
@@ -69,74 +76,10 @@ public class EarthQuakeListFragment extends ListFragment {
         return layout;
     }
 
-    private void updateEarthQuakes() {
 
-        String earthquakesFeed = getString(R.string.earthquakes_url);
-
-        try{
-            URL url = new URL(earthquakesFeed);
-            URLConnection connection = url.openConnection();
-            HttpURLConnection httpConnection = (HttpURLConnection)connection;
-
-            int	responseCode = httpConnection.getResponseCode();
-
-            if	(responseCode == HttpURLConnection.HTTP_OK)	{
-                BufferedReader streamReader = new BufferedReader(
-                        new InputStreamReader(
-                                httpConnection.getInputStream(), "UTF-8"));
-
-                StringBuilder responseStrBuilder = new StringBuilder();
-
-                String inputStr;
-                while ((inputStr = streamReader.readLine()) != null)
-                    responseStrBuilder.append(inputStr);
-
-                json = new JSONObject(responseStrBuilder.toString());
-                JSONArray earthquakes = json.getJSONArray("features");
-
-                for (int i = earthquakes.length()-1; i >= 0; i--) {
-                    processEarthQuakeTask(earthquakes.getJSONObject(i));
-                }
-            }
-        }
-        catch	(MalformedURLException e)	{
-            Log.d("ERR", "Malformed	URL	Exception.", e);
-        }
-        catch	(IOException e)	{
-            Log.d("ERR",	"IO	Exception.",e);
-        }
-        catch(JSONException e){
-            Log.d("ERR",	"JSON Exception.",e);
-        }
-
-    }
-
-    private void processEarthQuakeTask(JSONObject jsonObject) {
-        try{
-            String id = jsonObject.getString("id");
-            JSONArray jsonCoords = jsonObject.getJSONObject("geometry").getJSONArray("coordinates");
-            Coordinate coords = new Coordinate(jsonCoords.getDouble(0), jsonCoords.getDouble(1), jsonCoords.getDouble(2));
-            JSONObject properties = jsonObject.getJSONObject("properties");
-
-            EarthQuake earthQuake = new EarthQuake();
-            earthQuake.set_id(jsonObject.getString("id"));
-            earthQuake.setPlace(properties.getString("place"));
-            earthQuake.setMagnitude(properties.getDouble("mag"));
-            earthQuake.setDate(properties.getInt("time"));
-            earthQuake.setUrl(properties.getString("url"));
-            earthQuake.setCoords(coords);
-
-            Log.d("EARTHQUAKE", earthQuake.toString());
-
-            //Agregamos el dato de terremoto en la estructura de datos
-            this.earthQuakes.add(0,earthQuake);
-            //Debemos notificar al adaptador para que se refresque
-            aa.notifyDataSetChanged();
-
-        }
-        catch(JSONException e){
-            Log.d("ERR", e.toString());
-        }
-
+    @Override
+    public void addEarthQuake(EarthQuake earthQuake) {
+        earthQuakes.add(0,earthQuake);
+        aa.notifyDataSetChanged();
     }
 }
