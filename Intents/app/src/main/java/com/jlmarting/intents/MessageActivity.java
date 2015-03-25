@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,8 +42,8 @@ public class MessageActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                TextView tvMsg = (TextView)findViewById(R.id.tvMsg);
-                String msg = tvMsg.getText().toString();
+                EditText etMsg = (EditText)findViewById(R.id.etMsg);
+                String msg = etMsg.getText().toString();
                 if(msg.length()>0){
                     Intent intent = new Intent(getApplicationContext(),MessageActivity.class);
                     intent.putExtra(MainActivity.MSG, msg);

@@ -92,10 +92,12 @@ public class MainActivity extends ActionBarActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode!=RESULT_CANCELED){
-            switch(resultCode){
+            switch(requestCode){
                 case REQUEST_TARGET:
                     String msg = data.getStringExtra(MSG);
                     TextView lblMsg = (TextView)findViewById(R.id.lblMsg);
+                    Log.d("MSG",msg);
+                    //TODO: fallo al asignar el texto, revisar
                     lblMsg.setText(msg);
                     break;
                 case REQUEST_PHOTO:
