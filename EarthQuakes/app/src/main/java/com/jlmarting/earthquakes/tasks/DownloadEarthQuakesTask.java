@@ -29,6 +29,7 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
     public interface AddEarthQuakeInterface{
         public void addEarthQuake(EarthQuake earthQuake);
         //posteriormente en el constructor "obligamos" a que se utilice
+        public void notifyTotal(int total);
     }
 
     private AddEarthQuakeInterface target;
@@ -41,17 +42,19 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
 
     @Override
     protected Integer doInBackground(String... urls) {
+        int count = 0;
         // Este método es equivalente al thread anterior
 
         if(urls.length>0) {
-            updateEarthQuakes(urls[0]);
+           count = updateEarthQuakes(urls[0]);
         }
-        return null;
+        return count;
     }
 
-
-    private void updateEarthQuakes(String earthquakesFeed) {
+    //En el overide hemos modificado el return de void a int
+    private int updateEarthQuakes(String earthquakesFeed) {
         JSONObject json;
+        int count = 0;
        // String earthquakesFeed = getString(R.string.earthquakes_url);
 
         try{
@@ -78,18 +81,20 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
                 for (int i = earthquakes.length()-1; i >= 0; i--) {
                     processEarthQuakeTask(earthquakes.getJSONObject(i));
                 }
+                count = earthquakes.length();
+
             }
         }
         catch	(MalformedURLException e)	{
             Log.d("ERR", "Malformed	URL	Exception.", e);
         }
         catch	(IOException e)	{
-            Log.d("ERR",	"IO	Exception.",e);
+            Log.d("ERR","IO	Exception.",e);
         }
         catch(JSONException e){
-            Log.d("ERR",	"JSON Exception.",e);
+            Log.d("ERR","JSON Exception.",e);
         }
-
+        return count;
     }
 
     @Override
@@ -126,6 +131,13 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
         catch(JSONException e){
             Log.d("ERR", e.toString());
         }
+
+    }
+
+    @Override
+    protected void onPostExecute(Integer total) {
+        super.onPostExecute(total);
+        target.notifyTotal(total);
 
     }
 }

@@ -1,11 +1,15 @@
 package com.jlmarting.earthquakes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.jlmarting.earthquakes.adapter.EarthQuakeAdapter;
@@ -32,21 +36,6 @@ public class EarthQuakeListFragment extends ListFragment implements DownloadEart
         super.onCreate(savedInstanceState);
 
         earthQuakes = new ArrayList<>();
-        /*
-        Debería dar fallo, dado que desde el thread no
-        es posible acceder a la vista
-        Ya no nos será util, usaremos el AsyncTask
-        DownloadEarthQuakesTask que hemos creado
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                updateEarthQuakes();
-            }
-        });
-
-       t.start();               */
 
         DownloadEarthQuakesTask task = new DownloadEarthQuakesTask(this);
         //los asynctask se ponen en marcha con execute
@@ -62,10 +51,28 @@ public class EarthQuakeListFragment extends ListFragment implements DownloadEart
         return layout;
     }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra("id", earthQuakes.get(position).get_id());
+        startActivity(intent);
+    }
 
     @Override
     public void addEarthQuake(EarthQuake earthQuake) {
         earthQuakes.add(0,earthQuake);
         aa.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifyTotal(int total) {
+        Log.d("TOTAL", String.valueOf(total));
+        String msg = getString(R.string.num_earthquakes, total);
+
+        Toast t = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
+        t.show();
+
     }
 }
