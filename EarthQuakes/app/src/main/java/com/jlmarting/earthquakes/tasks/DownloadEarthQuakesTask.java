@@ -1,8 +1,11 @@
 package com.jlmarting.earthquakes.tasks;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.jlmarting.earthquakes.database.EarthQuakeDB;
 import com.jlmarting.earthquakes.model.Coordinate;
 import com.jlmarting.earthquakes.model.EarthQuake;
 
@@ -23,6 +26,8 @@ import java.net.URLConnection;
  */
 public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer> {
 
+    private EarthQuakeDB earthQuakeDB;
+
     /*Implementamos una interfaz para pasar datos
         La interfaz es como un tipo de datos
      */
@@ -36,9 +41,11 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
     private String EARTHQUAKE = "EARTHQUAKE";
 
 
-    public DownloadEarthQuakesTask(AddEarthQuakeInterface target){
+    public DownloadEarthQuakesTask(Context context, AddEarthQuakeInterface target){
         this.target = target;
+        this.earthQuakeDB = new EarthQuakeDB(context);
     }
+
 
     @Override
     protected Integer doInBackground(String... urls) {
@@ -51,7 +58,9 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
         return count;
     }
 
-    //En el overide hemos modificado el return de void a int
+
+
+    //En el override hemos modificado el return de void a int
     private int updateEarthQuakes(String earthquakesFeed) {
         JSONObject json;
         int count = 0;
@@ -100,8 +109,7 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
     @Override
     protected void onProgressUpdate(EarthQuake... earthQuakes) {
         super.onProgressUpdate(earthQuakes);
-
-        target.addEarthQuake(earthQuakes[0]);
+       // target.addEarthQuake(earthQuakes[0]);
 
     }
 

@@ -6,8 +6,8 @@
     <string name="title_activity_detail">DetailActivity</string>
     <string name="num_earthquakes"> %d Earthquakes</string>
     <string name="title_activity_setting">title_activity_settings</string>
-    <string name="earthquakes_refresh">earthquake_refresh</string>
-    <string name="autorefreshOn">Autorefresco ON</string>
+    <string name="earthquakes_refresh">Frequency lapse</string>
+    <string name="autorefreshOn">Autorefresh ON</string>
     <string name="autorefreshOff">Desactivar autorefresco</string>
     <string name="refreshFreq">Frecuencia de autorefresco</string>
     <string name="PREF_AUTO_UPDATE">AUTO_REFRESH</string>
@@ -16,4 +16,7 @@
     <string name="auto_update_promp">Auto update</string>
     <string name="auto_update_desc">Autoupdate</string>
     <string name="earthquakes_filter">Magnitud</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

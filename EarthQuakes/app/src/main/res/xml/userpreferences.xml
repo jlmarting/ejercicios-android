@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/earthquakes_refresh">
+        <!-- Autorefresh si/no -->
+        <SwitchPreference
+            android:key="@string/PREF_AUTO_UPDATE"
+            android:title="@string/auto_update_promp"
+            android:summary="@string/auto_update_desc"
+            android:defaultValue="true">
+        </SwitchPreference>
+        <!-- Frecuencia de refresco -->
+        <ListPreference
+            android:key="@string/PREF_UPDATE_INTERVAL"
+            android:title="@string/earthquakes_refresh"
+            android:defaultValue="5"
+            android:summary=""
+            android:entries="@array/update_freg_entries"
+            android:entryValues="@array/update_freg_values"
+            android:dependency="@string/PREF_AUTO_UPDATE"></ListPreference>
+        <!-- Magnitud, lista de valores -->
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/earthquakes_filter">
+        <ListPreference
+            android:key="@string/PREF_MIN_MAG"
+            android:defaultValue="8"></ListPreference>
+    </PreferenceCategory>
 
 </PreferenceScreen>
