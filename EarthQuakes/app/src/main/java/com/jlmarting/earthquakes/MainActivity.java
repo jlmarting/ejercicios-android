@@ -21,7 +21,6 @@ public class MainActivity extends ActionBarActivity implements DownloadEarthQuak
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // El activity_main instanciará un fragment. La lógica de la app estará ahí
         setContentView(R.layout.activity_main);
 
         updateEarthQuakes();
@@ -74,7 +73,7 @@ public class MainActivity extends ActionBarActivity implements DownloadEarthQuak
     public void updateEarthQuakes(){
         //earthQuakes = new ArrayList<>();
 
-        DownloadEarthQuakesTask task = new DownloadEarthQuakesTask(this.getBaseContext());
+        DownloadEarthQuakesTask task = new DownloadEarthQuakesTask(this.getApplicationContext(),this);
         //los asynctask se ponen en marcha con execute
         task.execute(getString(R.string.earthquakes_url));
 

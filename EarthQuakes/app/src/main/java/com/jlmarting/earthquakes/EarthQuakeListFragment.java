@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 
 import com.jlmarting.earthquakes.adapter.EarthQuakeAdapter;
+import com.jlmarting.earthquakes.database.EarthQuakeDB;
 import com.jlmarting.earthquakes.model.EarthQuake;
 import com.jlmarting.earthquakes.tasks.DownloadEarthQuakesTask;
 
@@ -41,6 +42,8 @@ public class EarthQuakeListFragment extends ListFragment{
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getBaseContext());
 
         //this.updateEarthQuakes();
+
+
     }
 
     @Override
@@ -57,7 +60,9 @@ public class EarthQuakeListFragment extends ListFragment{
         View layout = super.onCreateView(inflater, container, savedInstanceState);
         earthQuakes = new ArrayList<>();
        // aa= new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,this.earthQuakes);
-        aa= new EarthQuakeAdapter(getActivity(),R.layout.earthquake_layout,this.earthQuakes);
+       // aa= new EarthQuakeAdapter(getActivity(),R.layout.earthquake_layout,this.earthQuakes);
+        EarthQuakeDB earthQuakeDB=new EarthQuakeDB(getActivity());
+        aa= new EarthQuakeAdapter(getActivity(),R.layout.earthquake_layout,earthQuakeDB.selectAll());
         setListAdapter(aa);
         return layout;
     }

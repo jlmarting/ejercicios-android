@@ -26,7 +26,7 @@ import java.net.URLConnection;
  */
 public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer> {
 
-    private EarthQuakeDB earthQuakeDB;
+    public static EarthQuakeDB earthQuakeDB;
 
     /*Implementamos una interfaz para pasar datos
         La interfaz es como un tipo de datos
@@ -74,6 +74,9 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
             int	responseCode = httpConnection.getResponseCode();
 
             if	(responseCode == HttpURLConnection.HTTP_OK)	{
+
+                // Lectura JSON
+
                 BufferedReader streamReader = new BufferedReader(
                         new InputStreamReader(
                                 httpConnection.getInputStream(), "UTF-8"));
@@ -110,7 +113,7 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
     protected void onProgressUpdate(EarthQuake... earthQuakes) {
         super.onProgressUpdate(earthQuakes);
        // target.addEarthQuake(earthQuakes[0]);
-
+       // Si hacemos esto aquí bloqueamos el thread...
     }
 
     private void processEarthQuakeTask(JSONObject jsonObject) {
@@ -135,6 +138,8 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
             //Debemos notificar al adaptador para que se refresque
             //aa.notifyDataSetChanged();
 
+            this.earthQuakeDB.insert(earthQuake);
+
         }
         catch(JSONException e){
             Log.d("ERR", e.toString());
@@ -146,6 +151,8 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
     protected void onPostExecute(Integer total) {
         super.onPostExecute(total);
         target.notifyTotal(total);
+
+        this.earthQuakeDB.selectAll();
 
     }
 }
