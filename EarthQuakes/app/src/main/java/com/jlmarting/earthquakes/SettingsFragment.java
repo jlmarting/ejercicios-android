@@ -1,15 +1,12 @@
 package com.jlmarting.earthquakes;
 
 
+import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.Map;
 
@@ -35,9 +32,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Log.d("PREFS_CHANGED", key);
-        Log.d("ALL_PREFERENCES",sharedPreferences.getAll().toString());
+        Log.d("ALL_PREFERENCES", sharedPreferences.getAll().toString());
         //UPDATE_INTERVAL
-        Map<String,?> settings = (Map)sharedPreferences.getAll();
+        Map<String, ?> settings = (Map) sharedPreferences.getAll();
 
         //No se puede hacer un switch de strings...
         String PREF_AUTO_UPDATE = getString(R.string.PREF_AUTO_UPDATE);
@@ -51,12 +48,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
          */
 
-        if (key.equals(PREF_AUTO_UPDATE)){
+        if (key.equals(PREF_AUTO_UPDATE)) {
 
-        }else if (key.equals(PREF_UPDATE_INTERVAL)) {
+        } else if (key.equals(PREF_UPDATE_INTERVAL)) {
 
-        }else if (key.equals(PREF_AUTO_UPDATE)){
-            double minMag = Double.parseDouble(sharedPreferences.getString(key,"0"));
+        } else if (key.equals(PREF_AUTO_UPDATE)) {
+            double minMag = Double.parseDouble(sharedPreferences.getString(key, "0"));
         }
 
 

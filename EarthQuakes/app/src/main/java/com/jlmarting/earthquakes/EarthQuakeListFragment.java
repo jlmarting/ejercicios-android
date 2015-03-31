@@ -1,30 +1,26 @@
 package com.jlmarting.earthquakes;
 
+import android.app.ListFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.ListFragment;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
 
 import com.jlmarting.earthquakes.adapter.EarthQuakeAdapter;
 import com.jlmarting.earthquakes.database.EarthQuakeDB;
 import com.jlmarting.earthquakes.model.EarthQuake;
-import com.jlmarting.earthquakes.tasks.DownloadEarthQuakesTask;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 
-public class EarthQuakeListFragment extends ListFragment{
+public class EarthQuakeListFragment extends ListFragment {
     private JSONObject json;
     private ArrayList<EarthQuake> earthQuakes;
     private ArrayAdapter<EarthQuake> aa;
@@ -40,9 +36,8 @@ public class EarthQuakeListFragment extends ListFragment{
 
         //ToDo: cargar preferencias
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getBaseContext());
-
+        // savedInstanceState.getParcelableArrayList(MainActivity.EARTHQUAKES_KEY);
         //this.updateEarthQuakes();
-
 
     }
 
@@ -54,15 +49,15 @@ public class EarthQuakeListFragment extends ListFragment{
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = super.onCreateView(inflater, container, savedInstanceState);
         earthQuakes = new ArrayList<>();
-       // aa= new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,this.earthQuakes);
-       // aa= new EarthQuakeAdapter(getActivity(),R.layout.earthquake_layout,this.earthQuakes);
-        EarthQuakeDB earthQuakeDB=new EarthQuakeDB(getActivity());
-        aa= new EarthQuakeAdapter(getActivity(),R.layout.earthquake_layout,earthQuakeDB.selectAll());
+        // aa= new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,this.earthQuakes);
+        // aa= new EarthQuakeAdapter(getActivity(),R.layout.earthquake_layout,this.earthQuakes);
+        EarthQuakeDB earthQuakeDB = new EarthQuakeDB(getActivity());
+        this.earthQuakes = earthQuakeDB.selectAll();
+        aa = new EarthQuakeAdapter(getActivity(), R.layout.earthquake_layout, this.earthQuakes);
         setListAdapter(aa);
         return layout;
     }
@@ -72,7 +67,10 @@ public class EarthQuakeListFragment extends ListFragment{
         super.onListItemClick(l, v, position, id);
 
         Intent intent = new Intent(getActivity(), DetailActivity.class);
+        //Log.d("FREAID",String.valueOf(position));
         intent.putExtra("id", earthQuakes.get(position).get_id());
+        //intent.putExtra("place",earthQuakes.get(position).getPlace());
+        //intent.putExtra("mag",earthQuakes.get(position).getMagnitude());
         startActivity(intent);
     }
 

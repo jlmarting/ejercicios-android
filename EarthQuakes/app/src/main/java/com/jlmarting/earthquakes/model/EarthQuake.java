@@ -26,6 +26,7 @@ public class EarthQuake {
 
     }
 
+
     public String getUrl() {
         return url;
     }
@@ -34,9 +35,10 @@ public class EarthQuake {
         this.url = url;
     }
 
-    public void setDate(int date){
-       this.date = new Date(date);
-   }
+    public void setDate(int date) {
+        this.date = new Date(date);
+    }
+
     @Override
     public String toString() {
         return this.getPlace();

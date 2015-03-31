@@ -1,9 +1,14 @@
 package com.jlmarting.earthquakes;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.jlmarting.earthquakes.database.EarthQuakeDB;
+import com.jlmarting.earthquakes.model.EarthQuake;
 
 
 public class DetailActivity extends ActionBarActivity {
@@ -12,6 +17,19 @@ public class DetailActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        EarthQuakeDB db = new EarthQuakeDB(this);
+        EarthQuake ea = db.selectById(getIntent().getStringExtra("id"));
+
+        TextView tvPlace = (TextView)findViewById(R.id.tvPlace);
+        TextView tvMag = (TextView)findViewById(R.id.tvMag);
+        tvPlace.setText(ea.getPlace());
+        tvMag.setText(String.valueOf(ea.getMagnitude()));
+
+        Log.d("DETAIL-EA", ea.getPlace() + " - " + ea.getMagnitude());
+
+
+
     }
 
 

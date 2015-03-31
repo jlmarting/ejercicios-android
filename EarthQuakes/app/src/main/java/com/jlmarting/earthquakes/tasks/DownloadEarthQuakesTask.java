@@ -2,7 +2,6 @@ package com.jlmarting.earthquakes.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.jlmarting.earthquakes.database.EarthQuakeDB;
@@ -23,57 +22,44 @@ import java.net.URLConnection;
 
 /**
  * Created by cursomovil on 25/03/15.
+ * Un AsyncTask tiene sentido cuando tenemos que sincronizarlo con la vista.
+ * Sino usaríamos un thread normal.
  */
-public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer> {
+public class DownloadEarthQuakesTask extends AsyncTask<String, EarthQuake, Integer> {
 
     public static EarthQuakeDB earthQuakeDB;
-
-    /*Implementamos una interfaz para pasar datos
-        La interfaz es como un tipo de datos
-     */
-    public interface AddEarthQuakeInterface{
-        public void addEarthQuake(EarthQuake earthQuake);
-        //posteriormente en el constructor "obligamos" a que se utilice
-        public void notifyTotal(int total);
-    }
-
     private AddEarthQuakeInterface target;
     private String EARTHQUAKE = "EARTHQUAKE";
-
-
-    public DownloadEarthQuakesTask(Context context, AddEarthQuakeInterface target){
+    public DownloadEarthQuakesTask(Context context, AddEarthQuakeInterface target) {
         this.target = target;
         this.earthQuakeDB = new EarthQuakeDB(context);
     }
-
 
     @Override
     protected Integer doInBackground(String... urls) {
         int count = 0;
         // Este método es equivalente al thread anterior
 
-        if(urls.length>0) {
-           count = updateEarthQuakes(urls[0]);
+        if (urls.length > 0) {
+            count = updateEarthQuakes(urls[0]);
         }
         return count;
     }
-
-
 
     //En el override hemos modificado el return de void a int
     private int updateEarthQuakes(String earthquakesFeed) {
         JSONObject json;
         int count = 0;
-       // String earthquakesFeed = getString(R.string.earthquakes_url);
+        // String earthquakesFeed = getString(R.string.earthquakes_url);
 
-        try{
+        try {
             URL url = new URL(earthquakesFeed);
             URLConnection connection = url.openConnection();
-            HttpURLConnection httpConnection = (HttpURLConnection)connection;
+            HttpURLConnection httpConnection = (HttpURLConnection) connection;
 
-            int	responseCode = httpConnection.getResponseCode();
+            int responseCode = httpConnection.getResponseCode();
 
-            if	(responseCode == HttpURLConnection.HTTP_OK)	{
+            if (responseCode == HttpURLConnection.HTTP_OK) {
 
                 // Lectura JSON
 
@@ -90,21 +76,18 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
                 json = new JSONObject(responseStrBuilder.toString());
                 JSONArray earthquakes = json.getJSONArray("features");
 
-                for (int i = earthquakes.length()-1; i >= 0; i--) {
+                for (int i = earthquakes.length() - 1; i >= 0; i--) {
                     processEarthQuakeTask(earthquakes.getJSONObject(i));
                 }
                 count = earthquakes.length();
 
             }
-        }
-        catch	(MalformedURLException e)	{
+        } catch (MalformedURLException e) {
             Log.d("ERR", "Malformed	URL	Exception.", e);
-        }
-        catch	(IOException e)	{
-            Log.d("ERR","IO	Exception.",e);
-        }
-        catch(JSONException e){
-            Log.d("ERR","JSON Exception.",e);
+        } catch (IOException e) {
+            Log.d("ERR", "IO	Exception.", e);
+        } catch (JSONException e) {
+            Log.d("ERR", "JSON Exception.", e);
         }
         return count;
     }
@@ -112,12 +95,12 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
     @Override
     protected void onProgressUpdate(EarthQuake... earthQuakes) {
         super.onProgressUpdate(earthQuakes);
-       // target.addEarthQuake(earthQuakes[0]);
-       // Si hacemos esto aquí bloqueamos el thread...
+        // target.addEarthQuake(earthQuakes[0]);
+        // Si hacemos esto aquí bloqueamos el thread...
     }
 
     private void processEarthQuakeTask(JSONObject jsonObject) {
-        try{
+        try {
             String id = jsonObject.getString("id");
             JSONArray jsonCoords = jsonObject.getJSONObject("geometry").getJSONArray("coordinates");
             Coordinate coords = new Coordinate(jsonCoords.getDouble(0), jsonCoords.getDouble(1), jsonCoords.getDouble(2));
@@ -140,19 +123,26 @@ public class DownloadEarthQuakesTask extends AsyncTask<String,EarthQuake,Integer
 
             this.earthQuakeDB.insert(earthQuake);
 
-        }
-        catch(JSONException e){
+        } catch (JSONException e) {
             Log.d("ERR", e.toString());
         }
-
     }
 
     @Override
     protected void onPostExecute(Integer total) {
         super.onPostExecute(total);
         target.notifyTotal(total);
-
         this.earthQuakeDB.selectAll();
 
+    }
+
+    /*Implementamos una interfaz para pasar datos
+        La interfaz es como un tipo de datos
+     */
+    public interface AddEarthQuakeInterface {
+        public void addEarthQuake(EarthQuake earthQuake);
+
+        //posteriormente en el constructor "obligamos" a que se utilice
+        public void notifyTotal(int total);
     }
 }
