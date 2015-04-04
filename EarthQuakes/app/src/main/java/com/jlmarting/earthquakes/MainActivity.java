@@ -11,18 +11,26 @@ import android.widget.Toast;
 import com.jlmarting.earthquakes.model.EarthQuake;
 import com.jlmarting.earthquakes.tasks.DownloadEarthQuakesTask;
 
+import services.DownloadEarthQuakeService;
 
-public class MainActivity extends ActionBarActivity implements DownloadEarthQuakesTask.AddEarthQuakeInterface {
+
+public class MainActivity extends ActionBarActivity
+        implements DownloadEarthQuakesTask.AddEarthQuakeInterface{
 
     public static final String EARTHQUAKES_KEY = "EARTHQUAKES";
     private static final int PREFS_ACTIVITY = 1;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        updateEarthQuakes();
+        Log.d("MAIN", "Launching service...");
+        Intent download = new Intent(this, DownloadEarthQuakeService.class);
+        startService(download);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,26 +60,10 @@ public class MainActivity extends ActionBarActivity implements DownloadEarthQuak
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    @Override
-    public void addEarthQuake(EarthQuake earthQuake) {
-
-    }
-
     @Override
     public void notifyTotal(int total) {
-        Log.d("TOTAL", String.valueOf(total));
         String msg = getString(R.string.num_earthquakes, total);
-        Toast t = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
+        Toast t = Toast.makeText(this, msg, Toast.LENGTH_LONG);
         t.show();
-
-    }
-
-    public void updateEarthQuakes() {
-        //earthQuakes = new ArrayList<>();
-        DownloadEarthQuakesTask task = new DownloadEarthQuakesTask(this.getApplicationContext(), this);
-        //los asynctask se ponen en marcha con execute
-        task.execute(getString(R.string.earthquakes_url));
-
     }
 }

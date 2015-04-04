@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,44 +22,42 @@ import java.util.ArrayList;
 
 
 public class EarthQuakeListFragment extends ListFragment {
-    private JSONObject json;
+
     private ArrayList<EarthQuake> earthQuakes;
     private ArrayAdapter<EarthQuake> aa;
+    private SharedPreferences prefs;
+    private EarthQuakeDB earthQuakeDB;
 
-    /*
-    Realmente no tenemos porque esperar a que la vista esté creada para realizar 
-    la conexión, puesto que puede tardar
-     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //ToDo: cargar preferencias
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getBaseContext());
-        // savedInstanceState.getParcelableArrayList(MainActivity.EARTHQUAKES_KEY);
-        //this.updateEarthQuakes();
-
-    }
+        this.earthQuakes = new ArrayList<>();
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        this.earthQuakeDB = new EarthQuakeDB(getActivity());
+     }
 
     @Override
     public void onResume() {
         super.onResume();
-        //Leemos settings
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getBaseContext());
+        prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        earthQuakes.clear();
+        earthQuakes.addAll(this.earthQuakeDB.selectAll());
+        aa.notifyDataSetChanged();
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
         View layout = super.onCreateView(inflater, container, savedInstanceState);
-        earthQuakes = new ArrayList<>();
-        // aa= new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,this.earthQuakes);
-        // aa= new EarthQuakeAdapter(getActivity(),R.layout.earthquake_layout,this.earthQuakes);
-        EarthQuakeDB earthQuakeDB = new EarthQuakeDB(getActivity());
-        this.earthQuakes = earthQuakeDB.selectAll();
+
         aa = new EarthQuakeAdapter(getActivity(), R.layout.earthquake_layout, this.earthQuakes);
-        setListAdapter(aa);
+        Log.d("EALF", this.earthQuakes.toString());
+        //Provide the cursor for the list view.
+        this.setListAdapter(aa);
         return layout;
     }
 
@@ -74,19 +73,4 @@ public class EarthQuakeListFragment extends ListFragment {
         startActivity(intent);
     }
 
-    /*@Override
-    public void addEarthQuake(EarthQuake earthQuake) {
-        earthQuakes.add(0,earthQuake);
-        aa.notifyDataSetChanged();
-    }*/
-/*
-    @Override
-   public void notifyTotal(int total) {
-        Log.d("TOTAL", String.valueOf(total));
-        String msg = getString(R.string.num_earthquakes, total);
-
-        Toast t = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
-        t.show();
-
-    }*/
 }

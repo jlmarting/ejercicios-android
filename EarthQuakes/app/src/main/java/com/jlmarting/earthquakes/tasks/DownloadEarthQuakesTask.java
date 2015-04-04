@@ -27,13 +27,25 @@ import java.net.URLConnection;
  */
 public class DownloadEarthQuakesTask extends AsyncTask<String, EarthQuake, Integer> {
 
+
+    //Declaramos una interfaz para pasar datos. La interfaz es como un tipo de datos
+    public interface AddEarthQuakeInterface {
+       // public void addEarthQuake(EarthQuake earthQuake);
+        public void notifyTotal(int total);
+    }
+
     public static EarthQuakeDB earthQuakeDB;
     private AddEarthQuakeInterface target;
     private String EARTHQUAKE = "EARTHQUAKE";
+
+
+
+
     public DownloadEarthQuakesTask(Context context, AddEarthQuakeInterface target) {
-        this.target = target;
+        this.target = target; //Obligamos en el constructor a implementar el interfaz
         this.earthQuakeDB = new EarthQuakeDB(context);
     }
+
 
     @Override
     protected Integer doInBackground(String... urls) {
@@ -46,11 +58,11 @@ public class DownloadEarthQuakesTask extends AsyncTask<String, EarthQuake, Integ
         return count;
     }
 
+
     //En el override hemos modificado el return de void a int
     private int updateEarthQuakes(String earthquakesFeed) {
         JSONObject json;
         int count = 0;
-        // String earthquakesFeed = getString(R.string.earthquakes_url);
 
         try {
             URL url = new URL(earthquakesFeed);
@@ -62,14 +74,18 @@ public class DownloadEarthQuakesTask extends AsyncTask<String, EarthQuake, Integ
             if (responseCode == HttpURLConnection.HTTP_OK) {
 
                 // Lectura JSON
-
                 BufferedReader streamReader = new BufferedReader(
                         new InputStreamReader(
                                 httpConnection.getInputStream(), "UTF-8"));
-
+                /*
+                StringBuilder
+                A modifiable sequence of characters for use in creating strings.
+                This class is intended as a direct replacement of StringBuffer for
+                non-concurrent use; unlike StringBuffer this class is not synchronized.
+                 */
                 StringBuilder responseStrBuilder = new StringBuilder();
-
                 String inputStr;
+
                 while ((inputStr = streamReader.readLine()) != null)
                     responseStrBuilder.append(inputStr);
 
@@ -99,6 +115,10 @@ public class DownloadEarthQuakesTask extends AsyncTask<String, EarthQuake, Integ
         // Si hacemos esto aquí bloqueamos el thread...
     }
 
+    /*
+    Toma un objeto JSON para publicarlo como progreso de la tarea (publishProgress) e
+    insertarlo en la base de datos.
+     */
     private void processEarthQuakeTask(JSONObject jsonObject) {
         try {
             String id = jsonObject.getString("id");
@@ -114,8 +134,10 @@ public class DownloadEarthQuakesTask extends AsyncTask<String, EarthQuake, Integ
             earthQuake.setUrl(properties.getString("url"));
             earthQuake.setCoords(coords);
 
-            Log.d("EARTHQUAKE", earthQuake.toString());
+            Log.d("TASK", earthQuake.toString());
             publishProgress(earthQuake);
+
+            //Código anterior a la existencia de base de datos
             //Agregamos el dato de terremoto en la estructura de datos
             //this.earthQuakes.add(0,earthQuake);
             //Debemos notificar al adaptador para que se refresque
@@ -124,7 +146,7 @@ public class DownloadEarthQuakesTask extends AsyncTask<String, EarthQuake, Integ
             this.earthQuakeDB.insert(earthQuake);
 
         } catch (JSONException e) {
-            Log.d("ERR", e.toString());
+            Log.d("TASK", e.toString());
         }
     }
 
@@ -136,13 +158,5 @@ public class DownloadEarthQuakesTask extends AsyncTask<String, EarthQuake, Integ
 
     }
 
-    /*Implementamos una interfaz para pasar datos
-        La interfaz es como un tipo de datos
-     */
-    public interface AddEarthQuakeInterface {
-        public void addEarthQuake(EarthQuake earthQuake);
 
-        //posteriormente en el constructor "obligamos" a que se utilice
-        public void notifyTotal(int total);
-    }
 }

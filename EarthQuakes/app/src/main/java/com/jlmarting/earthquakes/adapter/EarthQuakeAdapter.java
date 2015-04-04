@@ -1,6 +1,7 @@
 package com.jlmarting.earthquakes.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +47,12 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuake> {
         TextView tvPlace = (TextView) layout.findViewById(R.id.tvPlace);
         TextView tvDate = (TextView) layout.findViewById(R.id.tvDate);
 
-
         //Asignamos valores a la vista
         tvMag.setText(String.valueOf(item.getMagnitude()));
         tvPlace.setText(item.getPlace());
         tvDate.setText(item.getDate().toString());
+
+        Log.d("ADAPTER", item.getPlace());
 
         return layout;
     }

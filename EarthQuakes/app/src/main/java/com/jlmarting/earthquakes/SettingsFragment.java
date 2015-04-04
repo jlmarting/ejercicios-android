@@ -28,11 +28,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.userpreferences);
-
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefs.registerOnSharedPreferenceChangeListener(this);
+        addPreferencesFromResource(R.xml.userpreferences);
     }
 
     @Override
@@ -46,7 +44,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         String PREF_AUTO_UPDATE = getString(R.string.PREF_AUTO_UPDATE);
         String PREF_UPDATE_INTERVAL = getString(R.string.PREF_UPDATE_INTERVAL);
-        //String PREF_MIN_MAG = getString(R.string.PREF_MIN_MAG);
+        String PREF_MIN_MAG = getString(R.string.PREF_MIN_MAG);
         /*
         Tenemos que tener en cuenta que Settings es accesible globalmente por toda la app.
         Por lo tanto no nos tenemos que preocupar de pasar valores.
@@ -63,8 +61,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             int alarmType = AlarmManager.ELAPSED_REALTIME;
             String ALARM_ACTION = "ALARM_ACTION";
             Intent intentToFire = new Intent(ALARM_ACTION);
-            PendingIntent alarmIntent = PendingIntent.getService(getActivity(),ALARM_EARTHQUAKES,)
-            alarmManager.set(alarmType,100,intentToFire);
+           // PendingIntent alarmIntent = PendingIntent.getService(getActivity(),ALARM_EARTHQUAKES,false);
+            //alarmManager.set(alarmType,100,intentToFire);
 
         } else if (key.equals(PREF_AUTO_UPDATE)) {
             double minMag = Double.parseDouble(sharedPreferences.getString(key, "0"));

@@ -21,7 +21,13 @@
     <PreferenceCategory android:title="@string/earthquakes_filter">
         <ListPreference
             android:defaultValue="8"
-            android:key="@string/PREF_MIN_MAG"></ListPreference>
+            android:key="@string/PREF_MIN_MAG"
+            android:summary="@string/PREF_MIN_MAG"
+            android:entries="@array/magnitude"
+            android:entryValues="@array/magnitude">
+
+
+            </ListPreference>
     </PreferenceCategory>
 
 </PreferenceScreen>

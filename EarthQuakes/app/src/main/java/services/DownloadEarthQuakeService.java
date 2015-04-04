@@ -22,13 +22,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/*
-Mediante este servicio trataremos de realizar consultas periódicas
-de terremotos
- */
+    /*
+    Mediante este servicio trataremos de realizar consultas periódicas de terremotos.
+
+    AsyncTask:  tareas vinculadas a activity o fragment
+    Service:    se ejecuta en el hilo principal. Ideal para ejecución de duración indefinida
+                en background.
+    */
+
 public class DownloadEarthQuakeService extends Service {
 
     private EarthQuakeDB earthQuakeDB;
+    private static final String EARTHQUAKE = "EARTHQUAKE";
 
     public DownloadEarthQuakeService() {
 
@@ -37,13 +42,15 @@ public class DownloadEarthQuakeService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        earthQuakeDB = new EarthQuakeDB(this);
+        Log.d("SERVICE", "onCreate");
+        this.earthQuakeDB = new EarthQuakeDB(this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
+        Log.d("SERVICE", "onStartCommand -> thread");
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -57,9 +64,9 @@ public class DownloadEarthQuakeService extends Service {
 
 
     private int updateEarthQuakes(String earthquakesFeed) {
+
         JSONObject json;
         int count = 0;
-        // String earthquakesFeed = getString(R.string.earthquakes_url);
 
         try {
             URL url = new URL(earthquakesFeed);
@@ -86,6 +93,7 @@ public class DownloadEarthQuakeService extends Service {
                 JSONArray earthquakes = json.getJSONArray("features");
 
                 for (int i = earthquakes.length() - 1; i >= 0; i--) {
+                    Log.d("SERVICE", "update " + earthquakes.getJSONObject(i).toString());
                     processEarthQuakeTask(earthquakes.getJSONObject(i));
                 }
                 count = earthquakes.length();
@@ -101,7 +109,9 @@ public class DownloadEarthQuakeService extends Service {
         return count;
     }
 
-
+    /*
+    Inserta en la base de datos un elemento dado en formato JSON
+     */
     private void processEarthQuakeTask(JSONObject jsonObject) {
         try {
             String id = jsonObject.getString("id");
@@ -117,12 +127,7 @@ public class DownloadEarthQuakeService extends Service {
             earthQuake.setUrl(properties.getString("url"));
             earthQuake.setCoords(coords);
 
-            Log.d("EARTHQUAKE", earthQuake.toString());
-            //publishProgress(earthQuake);
-            //Agregamos el dato de terremoto en la estructura de datos
-            //this.earthQuakes.add(0,earthQuake);
-            //Debemos notificar al adaptador para que se refresque
-            //aa.notifyDataSetChanged();
+            Log.d("SERVICE", "process " + earthQuake.toString());
 
             this.earthQuakeDB.insert(earthQuake);
 
@@ -134,6 +139,7 @@ public class DownloadEarthQuakeService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-       return null;
+
+        return null;
     }
 }
