@@ -7,6 +7,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
 
+import com.jlmarting.earthquakes.R;
 import com.jlmarting.earthquakes.fragments.SettingsFragment;
 import com.jlmarting.earthquakes.managers.EarthQuakeAlarmManager;
 

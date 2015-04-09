@@ -14,7 +14,7 @@
             android:id="@+id/lbldist"
             android:text="New Text"
             android:paddingEnd="@android:dimen/app_icon_size"
-            android:textSize="32dp" />
+            android:textSize="@android:dimen/app_icon_size" />
 
         <Space
             android:layout_width="wrap_content"

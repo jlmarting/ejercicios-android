@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.jlmarting.earthquakes.R;
 import com.jlmarting.earthquakes.database.EarthQuakeDB;
 import com.jlmarting.earthquakes.managers.EarthQuakeAlarmManager;
 import com.jlmarting.earthquakes.tasks.DowloadEarthQuakesTask;
