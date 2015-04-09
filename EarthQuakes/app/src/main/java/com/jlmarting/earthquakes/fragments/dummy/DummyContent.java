@@ -1,4 +1,4 @@
-package com.jlmarting.earthquakes.dummy;
+package com.jlmarting.earthquakes.fragments.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/earthquakes_refresh">
-        <!-- Autorefresh si/no -->
+    <PreferenceCategory
+
+        android:title="@string/earthqueakes_refresh">
+        <!--AutoRefresh si/no>-->
         <SwitchPreference
-            android:defaultValue="true"
-            android:key="@string/PREF_AUTO_UPDATE"
-            android:summary="@string/auto_update_desc"
-            android:title="@string/auto_update_promp"></SwitchPreference>
-        <!-- Frecuencia de refresco -->
-        <ListPreference
-            android:defaultValue="5"
-            android:dependency="@string/PREF_AUTO_UPDATE"
-            android:entries="@array/update_freg_entries"
-            android:entryValues="@array/update_freg_values"
-            android:key="@string/PREF_UPDATE_INTERVAL"
-            android:summary=""
-            android:title="@string/earthquakes_refresh"></ListPreference>
-        <!-- Magnitud, lista de valores -->
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/earthquakes_filter">
-        <ListPreference
-            android:defaultValue="8"
-            android:key="@string/PREF_MIN_MAG"
-            android:summary="@string/PREF_MIN_MAG"
-            android:entries="@array/magnitude"
-            android:entryValues="@array/magnitude">
+            android:key="@string/pref_auto_update"
+            android:title="@string/auto_update_prompt"
+            android:summary="@string/auto_updt_descr"
+            android:defaultValue="true">
+         </SwitchPreference>
 
-
-            </ListPreference>
+        <!--Frecuecia de refresco-->
+        <ListPreference
+            android:title="@string/auto_update_interval_prompt"
+            android:summary="Select your favourite"
+            android:key="@string/auto_update_interval"
+            android:entries="@array/listfrecuency_options"
+            android:entryValues="@array/listfrecuency_values"
+            android:dependency="@string/pref_auto_update"
+            android:defaultValue="@integer/default_interval"/>
     </PreferenceCategory>
+    <PreferenceCategory
+
+        android:title="@string/earthqueakes_filter">
+        <!--Magnitud minima>-->
+        <ListPreference
+            android:title="@string/min_magnitude"
+            android:summary="Select the min Magnitude"
+            android:key="@string/magnitude"
+            android:entries="@array/listmagnitude_options"
+            android:entryValues="@array/listmagnitude_values" />
+   </PreferenceCategory>
 
 </PreferenceScreen>

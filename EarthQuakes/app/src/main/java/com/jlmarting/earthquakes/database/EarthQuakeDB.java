@@ -6,204 +6,173 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import com.jlmarting.earthquakes.MainActivity;
 import com.jlmarting.earthquakes.model.EarthQuake;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by cursomovil on 27/03/15.
  */
 public class EarthQuakeDB {
 
-    private final SQLiteDatabase db;
-    private SQLiteOpenHelper helper;
+    private  SQLiteDatabase db;
+    private EarthQuakeOpenHelper dbhelper;
+    private EarthQuakeDB Helper;
 
-    public EarthQuakeDB(Context context) {
-        this.helper = new EarthQuakeOpenHelper(context, EarthQuakeOpenHelper.DATABASE_NAME, null,
-                EarthQuakeOpenHelper.DATABASE_VERSION);
-        this.db = helper.getWritableDatabase();
+    //columnas de la tabla//
+
+    public static final String KEY_ID = "_id";
+    public static final String KEY_PLACE = "place";
+    public static final String KEY_MAGNITUDE = "magnitude";
+    public static final String KEY_LAT = "lat";
+    public static final String KEY_LONG = "Long";
+    public static final String KEY_URL = "url";
+    public static final String KEY_DEPTH = "depth";
+    public static final String KEY_TIME = "time";
+
+    public static final String[] KEYS_ALL = {KEY_ID,KEY_PLACE,KEY_MAGNITUDE, KEY_LAT, KEY_LONG, KEY_URL,KEY_DEPTH, KEY_TIME };
+
+    public EarthQuakeDB (Context context){
+
+        this.dbhelper= new EarthQuakeOpenHelper(context, EarthQuakeOpenHelper.DATABASE_NAME, null, EarthQuakeOpenHelper.DATABASE_VERSION);
+        this.db = dbhelper.getWritableDatabase();
     }
 
-    public void insert(EarthQuake earthQuake) {
 
-       /*
-       No usar este método. Utilizar ContentValues
+    public List <EarthQuake> getAll(){
+        return query(null, null);
+    }
 
-       String query = "INSERT INTO " + EarthQuakeOpenHelper.DATABASE_TABLE
-                + "('_id', 'place', 'magnitude', 'url', 'lat', 'long', 'time') VALUES ('" +
-                earthQuake.get_id().toString() + "', '" +
-                earthQuake.getPlace().toString() + "', '" +
-                earthQuake.getMagnitude() + "', '" +
-                //depth??
-                earthQuake.getUrl().toString() + "', '" +
-                earthQuake.getCoords().getLat() + "', '" +
-                earthQuake.getCoords().getLon() + "', '" +
-                earthQuake.getDate() + "')";
+    public List <EarthQuake> getAllByMagnitude(int magnitude){
+        String where = KEY_MAGNITUDE + ">=?";
 
-        Log.d("DB-insert", query.toString());
+        String [] whereArgs = {
+                String.valueOf(magnitude)
+        };
+        return query(where, whereArgs);
 
-        this.db.execSQL(query);
-        */
-
-        ContentValues values = new ContentValues();
-        values.put(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_ID, earthQuake.get_id());
-        values.put(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_PLACE, earthQuake.getPlace());
-        values.put(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_MAGNITUDE,
-                String.valueOf(earthQuake.getMagnitude()));
-        values.put(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_URL, earthQuake.getUrl().toString());
-        values.put(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_LONG, earthQuake.getCoords().getLon());
-        values.put(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_LAT, earthQuake.getCoords().getLat());
-        values.put(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_DEPTH, earthQuake.getCoords().getDepth());
-        values.put(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_TIME, earthQuake.getDate().toString());
+    }
 
 
-        try {
-            db.insertOrThrow(EarthQuakeOpenHelper.DATABASE_TABLE, null, values);
-        } catch (SQLiteException e) {
-            Log.d("SQLite-Error", "SQLite error");
+    public EarthQuake getById(String id){
+        EarthQuake eq = null;
+
+        String where = KEY_ID + "=?";
+        String whereArgs[] = {id};
+        List <EarthQuake> q = query(where, whereArgs);
+        if (q.size()>0){
+            eq =  q.get(0);
         }
+        return eq;
+
     }
 
-    public EarthQuake selectById(String id){
-        EarthQuake ea = new EarthQuake();
-        String selectQuery = "SELECT * FROM "
-                + EarthQuakeOpenHelper.DATABASE_TABLE
-                +" WHERE _id=?";
-        String[] args = {id};
-        Cursor cursor = db.rawQuery(selectQuery,args);
-        if (cursor.moveToFirst()) {
-            ea.set_id(cursor.getString(
-                    cursor.getColumnIndex(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_ID)));
-            ea.setMagnitude(cursor.getDouble(
-                    cursor.getColumnIndex(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_MAGNITUDE)
-            ));
-            ea.setPlace(cursor.getString(
-                    cursor.getColumnIndex(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_PLACE)
-            ));
-        }
-        return ea;
-    }
+    private List<EarthQuake> query(String where, String[]  whereArgs) {
 
-    /*
-    En este caso podría ser interesante trabajar con List que es un interfaz.
-    De esta forma podemos llamar a este método y usar otros tipos.
-     */
-    public ArrayList<EarthQuake> selectAll() {
+        List <EarthQuake> earthQuakes = new ArrayList<EarthQuake>();
 
-        ArrayList<EarthQuake> earthQuakes = new ArrayList<>();
-
-        try {
-            String query = "SELECT * FROM " + EarthQuakeOpenHelper.DATABASE_TABLE;
-            Log.d("EADB", query.toString());
-            Cursor cursor = this.db.rawQuery(query, null);
-            Log.d("EADB",cursor.toString());
-
-             /* Esta forma de crear la query sería más correcta
-            Cursor cursor = db.query(){
+        Cursor cursor;
+        cursor = db.query(
                 EarthQuakeOpenHelper.DATABASE_TABLE,
-                ALL_COLUMNS,
-                null, //claúsula where
+                KEYS_ALL,
+                where,
+                whereArgs,
                 null,
-                null //GROUP BY
-            }
-            */
+                null,
+                KEY_TIME + " DESC"
+        );
 
-            /*
-            Calling moveToFirst() does two things: it allows you to test whether
-            the query returned an empty set (by testing the return value) and it moves
-            the cursor to the first result (when the set is not empty).
-            Note that to guard against an empty return set, the code you posted should be
-            testing the return value (which it is not doing).
-            http://bit.ly/1EV3NVP
-             */
-
-           // if (cursor.moveToFirst() ){
-              // Log.d("EADB", "Empty database");
-             //   return earthQuakes;
-           // }
-
-            cursor.moveToFirst();
-            while (cursor.moveToNext()){
-                EarthQuake earthQuake = new EarthQuake();
-
-                earthQuake
-                        .set_id(cursor.
-                                getString(cursor
-                                        .getColumnIndex(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_ID)));
-
-                earthQuake
-                        .setPlace(cursor.
-                                getString(cursor
-                                        .getColumnIndex(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_PLACE)));
-
-                earthQuake
-                        .setMagnitude(cursor
-                                .getDouble(cursor
-                                        .getColumnIndex(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_MAGNITUDE)));
-
-                earthQuake
-                        .setDate(cursor
-                                .getInt(cursor
-                                        .getColumnIndex(EarthQuakeOpenHelper.EARTHQUAKES_FIELD_TIME)));
-
-                earthQuakes.add(earthQuake);
-
-                Log.d("EADB", "ID:"
-                        + earthQuake.get_id().toString()
-                        + " - MAG:" + earthQuake.getMagnitude()
-                        + " - PLACE:" + earthQuake.getPlace());
-
-            }
+        HashMap<String, Integer> indexes = new HashMap<>();
+        for (int i=0; i< KEYS_ALL.length; i++){
+            indexes.put(KEYS_ALL[i],cursor.getColumnIndex(KEYS_ALL[i]));
         }
-        catch (SQLiteException e){
-            Log.d("EADBx", e.getMessage());
+        while (cursor.moveToNext()){
+
+            EarthQuake earthquake=new EarthQuake();
+            earthquake.set_id(cursor.getString(indexes.get(KEY_ID)));
+            earthquake.setPlace(cursor.getString(indexes.get(KEY_PLACE)));
+            earthquake.setMagnitude(cursor.getDouble(indexes.get(KEY_MAGNITUDE)));
+            earthquake.getCoords().setLat(cursor.getDouble(indexes.get(KEY_LAT)));
+            earthquake.getCoords().setLng(cursor.getDouble(indexes.get(KEY_LONG)));
+            earthquake.getCoords().setDepth(cursor.getDouble(indexes.get(KEY_DEPTH)));
+            earthquake.setUrl(cursor.getString(indexes.get(KEY_URL)));
+            earthquake.setTime(cursor.getLong(indexes.get(KEY_TIME)));
+
+
+            earthQuakes.add(earthquake);
+
+
+
         }
-        catch (android.database.CursorIndexOutOfBoundsException e)        {
-            Log.d("EADBx", e.getMessage());
-        }
+
+
+
         return earthQuakes;
+
     }
 
-    private static class EarthQuakeOpenHelper extends SQLiteOpenHelper {
 
-        private static final String DATABASE_NAME = "earthquakes.db";
+    public void createRow(EarthQuake earthquake) {
+
+        ContentValues newValues = new ContentValues();
+
+
+        newValues.put(Helper.KEY_ID, earthquake.get_id());
+        newValues.put(Helper.KEY_TIME, earthquake.getTime().getTime());
+        newValues.put(Helper.KEY_PLACE, earthquake.getPlace());
+        newValues.put(Helper.KEY_LONG, earthquake.getCoords().getLng());
+        newValues.put(Helper.KEY_LAT, earthquake.getCoords().getLat());
+        newValues.put(Helper.KEY_URL, earthquake.getUrl());
+        newValues.put(Helper.KEY_MAGNITUDE, earthquake.getMagnitude());
+        newValues.put(Helper.KEY_DEPTH, earthquake.getCoords().getDepth());
+
+
+        try{
+            db.insertOrThrow(EarthQuakeOpenHelper.DATABASE_TABLE, null, newValues);
+        }catch(SQLiteException ex) {
+
+        }
+
+    }
+
+
+
+
+    private class EarthQuakeOpenHelper extends SQLiteOpenHelper {
+
+        private static final String DATABASE_NAME ="earthQuakes.db";
         private static final String DATABASE_TABLE = "EARTHQUAKES";
-        private static final String DATABASE_CREATE = "CREATE TABLE " + DATABASE_TABLE
-                + "(_id TEXT PRIMARY_KEY, " +
-                "place TEXT, magnitude REAL, " +
-                "depth REAL, url TEXT," +
-                "lat REAL, long REAL, time INTEGER)";
-        private static final int DATABASE_VERSION = 1;
-        /*
-        '_id', 'place', 'magnitude', 'url', 'lat', 'long', 'time'
-         */
-        private static final String EARTHQUAKES_FIELD_ID = "_id";
-        private static final String EARTHQUAKES_FIELD_PLACE = "place";
-        private static final String EARTHQUAKES_FIELD_MAGNITUDE = "magnitude";
-        private static final String EARTHQUAKES_FIELD_URL = "url";
-        private static final String EARTHQUAKES_FIELD_LAT = "lat";
-        private static final String EARTHQUAKES_FIELD_LONG = "long";
-        private static final String EARTHQUAKES_FIELD_DEPTH = "depth";
-        private static final String EARTHQUAKES_FIELD_TIME = "time";
+        private static final int DATABASE_VERSION  = 1;
 
-        private EarthQuakeOpenHelper(Context context, String name,
-                                     SQLiteDatabase.CursorFactory factory, int version) {
+
+        //private  static  final String DATABASE_CREATE= "CREATE TABLE" + DATABASE_TABLE + "_id PRIMARY KEY, place TEXT, magnitude REAL, lat REAL,long REAL, depth REAL, url TEXT, time INTEGER";
+        private static final String DATABASE_CREATE = "CREATE Table " + DATABASE_TABLE +
+                "(_id  TEXT PRIMARY KEY, place TEXT, magnitude REAL, lat REAL , Long REAL, url TEXT,depth REAL, time INTEGER)";
+
+
+        public EarthQuakeOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
             super(context, name, factory, version);
         }
 
-
         @Override
         public void onCreate(SQLiteDatabase db) {
+
             db.execSQL(DATABASE_CREATE);
+
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         }
-    }
 
+
+
+
+
+
+    }
 }

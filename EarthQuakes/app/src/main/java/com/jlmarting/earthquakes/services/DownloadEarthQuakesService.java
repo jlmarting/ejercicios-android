@@ -1,4 +1,4 @@
-package services;
+package com.jlmarting.earthquakes.services;
 
 import android.app.Service;
 import android.content.Intent;
@@ -22,67 +22,60 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-    /*
-    Mediante este servicio trataremos de realizar consultas periódicas de terremotos.
-
-    AsyncTask:  tareas vinculadas a activity o fragment
-    Service:    se ejecuta en el hilo principal. Ideal para ejecución de duración indefinida
-                en background.
-    */
-
-public class DownloadEarthQuakeService extends Service {
+public class DownloadEarthQuakesService extends Service {
 
     private EarthQuakeDB earthQuakeDB;
-    private static final String EARTHQUAKE = "EARTHQUAKE";
-
-    public DownloadEarthQuakeService() {
-
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("SERVICE", "onCreate");
-        this.earthQuakeDB = new EarthQuakeDB(this);
+
+        earthQuakeDB = new EarthQuakeDB(this);
+
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        Log.d("SERVICE", "onStartCommand -> thread");
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                updateEarthQuakes(getString(R.string.earthquakes_url));
-            }
-        });
-        t.start();
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    updatedEarthQuake(getString(R.string.earthquakesurl));
+                }
+            });
+
+            t.start();
+
+
+
         return Service.START_STICKY;
     }
 
 
-
-    private int updateEarthQuakes(String earthquakesFeed) {
+    private Integer updatedEarthQuake(String earthquakesFeed) {
 
         JSONObject json;
-        int count = 0;
+        Integer count = 0;
+
+
+        //earthquakesFeed = new URL(earthquakesFeed);
+        // String earthquakesFeed= getString(R.string.earthquakesurl);
 
         try {
+
             URL url = new URL(earthquakesFeed);
+            //	Create	a	new	HTTP	URL	connection
             URLConnection connection = url.openConnection();
             HttpURLConnection httpConnection = (HttpURLConnection) connection;
-
             int responseCode = httpConnection.getResponseCode();
-
             if (responseCode == HttpURLConnection.HTTP_OK) {
 
-                // Lectura JSON
 
                 BufferedReader streamReader = new BufferedReader(
                         new InputStreamReader(
                                 httpConnection.getInputStream(), "UTF-8"));
-
                 StringBuilder responseStrBuilder = new StringBuilder();
 
                 String inputStr;
@@ -91,55 +84,70 @@ public class DownloadEarthQuakeService extends Service {
 
                 json = new JSONObject(responseStrBuilder.toString());
                 JSONArray earthquakes = json.getJSONArray("features");
-
-                for (int i = earthquakes.length() - 1; i >= 0; i--) {
-                    Log.d("SERVICE", "update " + earthquakes.getJSONObject(i).toString());
-                    processEarthQuakeTask(earthquakes.getJSONObject(i));
-                }
                 count = earthquakes.length();
 
+                for (int i = earthquakes.length() - 1; i >= 0; i--) {
+                    processEarthQuakeTask(earthquakes.getJSONObject(i));
+                }
+
+
             }
+
+
         } catch (MalformedURLException e) {
-            Log.d("ERR", "Malformed	URL	Exception.", e);
+            e.printStackTrace();
         } catch (IOException e) {
-            Log.d("ERR", "IO	Exception.", e);
+            e.printStackTrace();
         } catch (JSONException e) {
-            Log.d("ERR", "JSON Exception.", e);
+            e.printStackTrace();
         }
+
         return count;
+
     }
 
-    /*
-    Inserta en la base de datos un elemento dado en formato JSON
-     */
+
     private void processEarthQuakeTask(JSONObject jsonObject) {
+
         try {
             String id = jsonObject.getString("id");
-            JSONArray jsonCoords = jsonObject.getJSONObject("geometry").getJSONArray("coordinates");
-            Coordinate coords = new Coordinate(jsonCoords.getDouble(0), jsonCoords.getDouble(1), jsonCoords.getDouble(2));
+            JSONArray jSoncoords = jsonObject.getJSONObject("geometry").getJSONArray("coordinates");
+            Coordinate coords = new Coordinate(jSoncoords.getDouble(0), jSoncoords.getDouble(1), jSoncoords.getDouble(2));
             JSONObject properties = jsonObject.getJSONObject("properties");
 
             EarthQuake earthQuake = new EarthQuake();
-            earthQuake.set_id(jsonObject.getString("id"));
+            //earthQuake.set_id(properties.getString("id"));
+            earthQuake.set_id(id);
             earthQuake.setPlace(properties.getString("place"));
             earthQuake.setMagnitude(properties.getDouble("mag"));
-            earthQuake.setDate(properties.getInt("time"));
+            earthQuake.setTime(properties.getLong("time"));
             earthQuake.setUrl(properties.getString("url"));
             earthQuake.setCoords(coords);
 
-            Log.d("SERVICE", "process " + earthQuake.toString());
+            Log.d("EQ", earthQuake.toString());
 
-            this.earthQuakeDB.insert(earthQuake);
+           /*Necesario para conectarse con la vista, llama a la funcion on ProgressUpdate, para esto es necesario la
+           * interface*/
+            //publishProgress(earthQuake);
+            //earthQuakes.add(0,earthQuake);
+            //aa.notifyDataSetChanged();
+
+            earthQuakeDB.createRow(earthQuake);
 
         } catch (JSONException e) {
-            Log.d("ERR", e.toString());
+            e.printStackTrace();
         }
+
+
     }
 
 
     @Override
     public IBinder onBind(Intent intent) {
-
-        return null;
+       return null;
     }
+
+
+
+
 }

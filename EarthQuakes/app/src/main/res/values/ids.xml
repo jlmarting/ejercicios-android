@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <item name="tvPlace" type="id">tvPlace</item>
-    <item name="tvDate" type="id">tvDate</item>
-    <item name="checkAutorefresh" type="id">checkAutorefresh</item>
-</resources>
