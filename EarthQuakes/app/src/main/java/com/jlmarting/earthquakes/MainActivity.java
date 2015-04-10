@@ -35,14 +35,6 @@ public class MainActivity extends ActionBarActivity implements DowloadEarthQuake
             EarthQuakeAlarmManager.setAlarm(this,interval);
             prefs.edit().putBoolean(KEY, true).apply();
         }
-
-      /*  DowloadEarthQuakesTask task = new DowloadEarthQuakesTask(this,this);
-
-        task.execute(getString(R.string.earthquakesurl));*/
-
-
-
-
     }
 
 
@@ -81,25 +73,4 @@ public class MainActivity extends ActionBarActivity implements DowloadEarthQuake
         toast.show();
     }
 
-  //  @Override
-   /* public  void addEarthQuake(EarthQuake earthquake) {
-
-        //earthQcuakes.add(0, earthquake);
-        //aa.notifyDataSetChanged();
-        ContentValues newValues = new ContentValues();
-
-        newValues.put(dbHelper.KEY_TIME, earthquake.getTime().getTime());
-        newValues.put(dbHelper.KEY_PLACE, earthquake.getPlace());
-        newValues.put(dbHelper.KEY_LONG, earthquake.getCoords().getLng());
-        newValues.put(dbHelper.KEY_LAT, earthquake.getCoords().getLat());
-        newValues.put(dbHelper.KEY_URL, earthquake.getUrl());
-        newValues.put(dbHelper.KEY_MAGNITUDE, earthquake.getMagnitude());
-        newValues.put(dbHelper.KEY_DEPTH, earthquake.getCoords().getDepth());
-
-        dbHelper.createRow(newValues);
-        Log.d("CHANGE","JAIONE");
-
-
-
-    }*/
 }

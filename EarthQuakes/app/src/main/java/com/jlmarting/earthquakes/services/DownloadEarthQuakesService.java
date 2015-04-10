@@ -48,8 +48,6 @@ public class DownloadEarthQuakesService extends Service {
 
             t.start();
 
-
-
         return Service.START_STICKY;
     }
 

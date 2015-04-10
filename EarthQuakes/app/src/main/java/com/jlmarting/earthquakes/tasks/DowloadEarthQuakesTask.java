@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.jlmarting.earthquakes.R;
 import com.jlmarting.earthquakes.database.EarthQuakeDB;
 import com.jlmarting.earthquakes.model.Coordinate;
 import com.jlmarting.earthquakes.model.EarthQuake;

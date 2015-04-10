@@ -121,7 +121,8 @@ public class EarthQuakeListFragment extends ListFragment
         super.onListItemClick(l, v, position, id);
 
         EarthQuake earthQuake = earthQuakes.get(position);
-       Intent detailIntent = new Intent(getActivity(), EarthQuakeActivityDetail.class);
+         Intent detailIntent = new Intent(getActivity(), EarthQuakeActivityDetail.class);
+        //Intent detailIntent = new Intent(getActivity(), mapsFragment.class);
 
         detailIntent.putExtra(EARTHQUAKES_ITEM, earthQuake.get_id());
         startActivity(detailIntent);
