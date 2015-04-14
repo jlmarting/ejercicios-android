@@ -28,7 +28,7 @@ public class EarthQuakeDB {
     public static final String KEY_PLACE = "place";
     public static final String KEY_MAGNITUDE = "magnitude";
     public static final String KEY_LAT = "lat";
-    public static final String KEY_LONG = "Long";
+    public static final String KEY_LONG = "lng";
     public static final String KEY_URL = "url";
     public static final String KEY_DEPTH = "depth";
     public static final String KEY_TIME = "time";
