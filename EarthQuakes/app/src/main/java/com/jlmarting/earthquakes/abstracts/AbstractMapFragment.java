@@ -18,7 +18,9 @@ import com.jlmarting.earthquakes.database.EarthQuakeDB;
 import com.jlmarting.earthquakes.model.EarthQuake;
 
 
-public abstract class AbstractMapFragment extends MapFragment implements GoogleMap.OnMapLoadedCallback, GoogleMap.CancelableCallback {
+public abstract class AbstractMapFragment extends MapFragment implements
+        GoogleMap.OnMapLoadedCallback,
+        GoogleMap.CancelableCallback {
 
     private final int maxZoomAfterAnimation = 9;
 
@@ -39,7 +41,7 @@ public abstract class AbstractMapFragment extends MapFragment implements GoogleM
     }
 
 
-    protected MarkerOptions createMarker(EarthQuake earthquake){
+    public MarkerOptions createMarker(EarthQuake earthquake){
         LatLng point = new LatLng(earthquake.getCoords().getLat(),
                 earthquake.getCoords().getLng());
         MarkerOptions marker = new MarkerOptions()

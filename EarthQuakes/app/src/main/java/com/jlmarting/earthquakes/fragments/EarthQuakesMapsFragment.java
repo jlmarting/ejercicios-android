@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.jlmarting.earthquakes.abstracts.AbstractMapFragment;
 import com.jlmarting.earthquakes.model.EarthQuake;
 
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EarthQuakesMapsFragment extends MapFragment implements GoogleMap.OnMapLoadedCallback {
+public class EarthQuakesMapsFragment extends AbstractMapFragment implements GoogleMap.OnMapLoadedCallback {
 
 
     private EarthQuake earthQuake;
@@ -57,7 +58,7 @@ public class EarthQuakesMapsFragment extends MapFragment implements GoogleMap.On
             LatLngBounds.Builder builder= new LatLngBounds.Builder();
                 for (int i = 0; i < earthQuakes.size(); i++) {
 
-                    LatLng eartqueakeposition = new LatLng(earthQuakes.get(i).getCoords().getLng(),
+                    LatLng earthquakePos = new LatLng(earthQuakes.get(i).getCoords().getLng(),
                             earthQuakes.get(i).getCoords().getLat());
                     String Place = earthQuakes.get(i).getPlace();
                     String Url = earthQuakes.get(i).getUrl();
@@ -66,12 +67,12 @@ public class EarthQuakesMapsFragment extends MapFragment implements GoogleMap.On
                     mapa.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
                     MarkerOptions marker =
                             new MarkerOptions()
-                                    .position(eartqueakeposition)
+                                    .position(earthquakePos)
                                     .title(Place)
                                     .snippet(String.valueOf(Magnitude));
 
                     mapa.addMarker(marker);
-                    builder.include(eartqueakeposition);
+                    builder.include(earthquakePos);
 
 
                 }
@@ -96,6 +97,15 @@ public class EarthQuakesMapsFragment extends MapFragment implements GoogleMap.On
 
             }
 
+    @Override
+    protected void getData() {
+
+    }
+
+    @Override
+    protected void showMap() {
+
+    }
 
 
 }

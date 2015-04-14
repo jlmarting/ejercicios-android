@@ -43,7 +43,6 @@ public class TabListener<T extends Fragment> implements ActionBar.TabListener {
         if (this.fragment!=null){
             ft.detach(this.fragment);
         }
-
     }
 
     @Override
@@ -52,6 +51,5 @@ public class TabListener<T extends Fragment> implements ActionBar.TabListener {
         if (this.fragment!=null){
             ft.detach(this.fragment);
         }
-
     }
 }

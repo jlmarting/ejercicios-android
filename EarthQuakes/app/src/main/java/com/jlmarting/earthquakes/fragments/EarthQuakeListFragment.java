@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.jlmarting.earthquakes.EarthQuakeActivityDetail;
+import com.jlmarting.earthquakes.adapters.earthQuakesAdapter;
 import com.jlmarting.earthquakes.R;
 
 import com.jlmarting.earthquakes.database.EarthQuakeDB;
@@ -20,9 +21,7 @@ import com.jlmarting.earthquakes.model.EarthQuake;
 
 import java.util.ArrayList;
 
-import com.jlmarting.earthquakes.adapters.earthQuakesAdapter;
 
-import static android.widget.Toast.makeText;
 
 /**
  * A fragment representing a list of Items.
@@ -31,10 +30,7 @@ import static android.widget.Toast.makeText;
  * Activities containing this fragment MUST implement the //{@link //OnFragmentInteractionListener}
  * interface.
  */
-public class EarthQuakeListFragment extends ListFragment
-        //implements DowloadEarthQuakesTask.AddEarthQuakeInterface
-
-{
+public class EarthQuakeListFragment extends ListFragment{
 
     private SharedPreferences prefs = null;
     public static final String EARTHQUAKES_ITEM = "EARTHQUAKES";
@@ -52,9 +48,6 @@ public class EarthQuakeListFragment extends ListFragment
 
         prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
         db = new EarthQuakeDB(getActivity());
-
-
-
 
         //prefs = PreferenceManager
 
@@ -79,7 +72,6 @@ public class EarthQuakeListFragment extends ListFragment
         View layout = super.onCreateView(inflater, container, savedInstanceState);
 
         //aa = new earthQuakesAdapter(getActivity(),R.layout.earthquakes_list,earthQuakes);
-
 
         earthQuakes = new ArrayList<EarthQuake>();
         aa = new earthQuakesAdapter(getActivity(), R.layout.earthquakes_list, earthQuakes);

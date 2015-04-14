@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.jlmarting.earthquakes.database.EarthQuakeDB;
 import com.jlmarting.earthquakes.fragments.EarthQuakeListFragment;
+import com.jlmarting.earthquakes.fragments.EarthQuakesMapListFragment;
 import com.jlmarting.earthquakes.fragments.EarthQuakesMapsFragment;
 import com.jlmarting.earthquakes.listeners.TabListener;
 import com.jlmarting.earthquakes.managers.EarthQuakeAlarmManager;
@@ -51,7 +52,7 @@ public class MainActivity extends Activity implements DowloadEarthQuakesTask.Add
                 ));
 
         ActionBar.Tab tab2 = actionBar.newTab().setText("Maps")
-                .setTabListener(new TabListener<EarthQuakesMapsFragment>(
+                .setTabListener(new TabListener<EarthQuakesMapListFragment>(
                         R.id.fragment,
                         EarthQuakesMapsFragment.class,
                         this

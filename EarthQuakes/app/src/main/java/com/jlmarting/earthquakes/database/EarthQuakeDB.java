@@ -46,7 +46,7 @@ public class EarthQuakeDB {
         return query(null, null);
     }
 
-    public List <EarthQuake> getAllByMagnitude(int magnitude){
+    public List <EarthQuake> getAllByMagnitude(double magnitude){
         String where = KEY_MAGNITUDE + ">=?";
 
         String [] whereArgs = {
@@ -104,14 +104,8 @@ public class EarthQuakeDB {
 
             earthQuakes.add(earthquake);
 
-
-
         }
-
-
-
-        return earthQuakes;
-
+       return earthQuakes;
     }
 
 
