@@ -34,10 +34,7 @@ public class DownloadEarthQuakesService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
         earthQuakeDB = new EarthQuakeDB(this);
-
-
     }
 
     @Override
@@ -66,7 +63,8 @@ public class DownloadEarthQuakesService extends Service {
                 .setContentText(count + " new earthquakes")
                 .setWhen(System.currentTimeMillis())
                 .setDefaults(Notification.DEFAULT_SOUND)
-                .setContentIntent(activityIntent);
+                .setContentIntent(activityIntent)
+                .setAutoCancel(true);
 
         Notification notification = builder.build();
 
@@ -75,7 +73,6 @@ public class DownloadEarthQuakesService extends Service {
 
         int NOTIFICATION_REF=1;
         notificationManager.notify(NOTIFICATION_REF,notification);
-
     }
 
     private Integer updatedEarthQuake(String earthquakesFeed) {

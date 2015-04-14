@@ -61,11 +61,7 @@ public class MainActivity extends Activity implements DowloadEarthQuakesTask.Add
 
         actionBar.addTab(tab1);
         actionBar.addTab(tab2);
-
-
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

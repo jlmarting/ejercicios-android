@@ -16,14 +16,18 @@ public class EarthQuakeAlarmManager {
     public  static void setAlarm(Context context, long interval){
 
 
-        android.app.AlarmManager alarmManager = (android.app.AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        android.app.AlarmManager alarmManager = (android.app.AlarmManager) context
+                .getSystemService(context.ALARM_SERVICE);
         int alarmtype = AlarmManager.RTC;
+
         //long timerOrLengthofWait = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+
         long timerOrLengthofWait = 1000;
+
         String ALARM_ACTION = "ALARM_ACTION";
         // Intent intent = new Intent(ALARM_ACTION);
         Intent intent = new Intent(context, DownloadEarthQuakesService.class);
-         PendingIntent alarmIntent = PendingIntent.getService(context, 0, intent, 0);
+        PendingIntent alarmIntent = PendingIntent.getService(context, 0, intent, 0);
         alarmManager.setInexactRepeating(alarmtype, interval, interval, alarmIntent);
         //Log.d("CHANGE", String.valueOf(context));
 
