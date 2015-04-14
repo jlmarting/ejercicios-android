@@ -22,6 +22,7 @@
     <string name="title_activity_settings_activity2">SettingsActivity2</string>
     <string name="Mensaje">Total de terremotos</string>
     <string name="title_activity_map_view">MapView</string>
+    <string name="action_refresh">Refresh</string>
 
     <string name="google_maps_key">AIzaSyCEvgIMhj7wRH1MqVNXu-jYY0V61aVaoa4</string>
 </resources>

@@ -30,7 +30,7 @@ public class SettingsFragment extends PreferenceFragment  {
 
 
         if (key.equals(Opcion1)){
-            //Auto refresh
+            //Auto menu_refresh
             Log.d(EARTHQUAKE, "Hemos cambiado: " + key + key + " => " + sharedPreferences.getBoolean(getString(R.string.pref_auto_update), true));
         } else if(key.equals(Opcion2)){
             //Tiempo de refresco
