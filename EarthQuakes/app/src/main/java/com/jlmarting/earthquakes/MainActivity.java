@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +11,8 @@ import android.widget.Toast;
 
 import com.jlmarting.earthquakes.database.EarthQuakeDB;
 import com.jlmarting.earthquakes.fragments.EarthQuakeListFragment;
+import com.jlmarting.earthquakes.fragments.EarthQuakesMapsFragment;
+import com.jlmarting.earthquakes.listeners.TabListener;
 import com.jlmarting.earthquakes.managers.EarthQuakeAlarmManager;
 import com.jlmarting.earthquakes.tasks.DowloadEarthQuakesTask;
 
@@ -41,16 +42,20 @@ public class MainActivity extends Activity implements DowloadEarthQuakesTask.Add
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayShowTitleEnabled(false);
 
+        ActionBar.Tab tab1 = actionBar.newTab().setText("List")
+                .setTabListener(new TabListener<EarthQuakeListFragment>(
+                        R.id.fragment,
+                        EarthQuakeListFragment.class,
+                        this
 
-        /*
-            Sin el setTabListener no funciona:
-            ¿por qué? ¿Es obligatorio asignar un listener?
-        */
-        ActionBar.Tab tab1 = actionBar.newTab().setText("TEST1")
-                .setTabListener(new TabListener<EarthQuakeListFragment>());
+                ));
 
-        ActionBar.Tab tab2 = actionBar.newTab().setText("TEST2")
-                .setTabListener(new TabListener<EarthQuakeListFragment>());
+        ActionBar.Tab tab2 = actionBar.newTab().setText("Maps")
+                .setTabListener(new TabListener<EarthQuakesMapsFragment>(
+                        R.id.fragment,
+                        EarthQuakesMapsFragment.class,
+                        this
+                ));
 
 
         actionBar.addTab(tab1);

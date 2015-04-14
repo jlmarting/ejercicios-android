@@ -20,22 +20,20 @@ import java.util.List;
 public class earthQuakesAdapter extends ArrayAdapter <EarthQuake> {
 
     private int resource;
+
+    private TextView lblDist;
+    private TextView lblSite;
+    private TextView lblTime;
+
     public earthQuakesAdapter(Context context, int resource, List<EarthQuake> objects) {
         super(context, resource, objects);
         this.resource = resource;
     }
 
-
-
-
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LinearLayout layout;
-
-
 
         if( convertView == null)
         {
@@ -53,18 +51,15 @@ public class earthQuakesAdapter extends ArrayAdapter <EarthQuake> {
         }
 
         EarthQuake item = getItem(position);
-        TextView lbldist = (TextView) layout.findViewById(R.id.lbldist);
-        TextView lblsite = (TextView) layout.findViewById(R.id.lblsite);
-        TextView lbltime = (TextView) layout.findViewById(R.id.lbltime);
+        this.lblDist = (TextView) layout.findViewById(R.id.lbldist);
+        this.lblSite = (TextView) layout.findViewById(R.id.lblsite);
+        this.lblTime = (TextView) layout.findViewById(R.id.lbltime);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
-
-       // String item3= item.getMagnitude().toString();
-        //lbltime.setText(item3);
-        lbldist.setText(Double.toString(item.getMagnitude()));
-        lblsite.setText(item.getPlace());
-        lbltime.setText(sdf.format(item.getTime()));
+        this.lblDist.setText(Double.toString(item.getMagnitude()));
+        this.lblSite.setText(item.getPlace());
+        this.lblTime.setText(sdf.format(item.getTime()));
 
         return layout;
     }
