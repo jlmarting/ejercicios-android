@@ -49,6 +49,9 @@ public class TabListener<T extends Fragment> implements ActionBar.TabListener {
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
         // Por lo general no se hace nada
+        if (this.fragment!=null){
+            ft.detach(this.fragment);
+        }
 
     }
 }
