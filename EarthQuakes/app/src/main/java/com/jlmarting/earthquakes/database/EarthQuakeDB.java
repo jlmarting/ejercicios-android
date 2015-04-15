@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.jlmarting.earthquakes.model.EarthQuake;
 
@@ -52,6 +53,9 @@ public class EarthQuakeDB {
         String [] whereArgs = {
                 String.valueOf(magnitude)
         };
+
+        Log.d("EADB", String.valueOf(magnitude));
+
         return query(where, whereArgs);
 
     }

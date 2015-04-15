@@ -33,12 +33,14 @@ public class EarthQuakesMapsFragment extends AbstractMapFragment implements Goog
     private TextView lblid;
     private TextView lblsite;
     private TextView lblurl;
-    private GoogleMap mapa =null;
+
     private MarkerOptions marker;
     private CameraUpdate camUpd;
     private Double Lng;
     private Double Lat;
     private List<EarthQuake> earthQuakes;
+
+    public GoogleMap mapa = null;
 
 
     @Override

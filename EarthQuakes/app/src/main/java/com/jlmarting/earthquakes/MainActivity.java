@@ -29,6 +29,8 @@ public class MainActivity extends Activity implements DowloadEarthQuakesTask.Add
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+       System.exit(0);
+
         String KEY = "LAUNCHED_BEFORE";
         SharedPreferences prefs= getSharedPreferences(EARTHQUAKE_PREFS, Activity.MODE_PRIVATE);
 

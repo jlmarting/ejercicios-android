@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Earthquakes</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="earthquakes_url">
+        http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson
+    </string>
+    <string name="title_activity_detail">Details</string>
+    <string name="num_earthquakes">%d earthquakes processed</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="earthquakes_refresh">EarthQuakes Refresh</string>
+    <string name="earthquake_filter">EarthQuakes Filter</string>
+    <string name="auto_refresh">Auto Refresh</string>
+    <string name="refresh_frequency">Refresh frequency</string>
+    <string name="min_magnitude_filter">Magnitude Filter</string>
+    <string name="PREF_AUTO_UPDATE">PREF_AUTO_UPDATE</string>
+    <string name="PREF_UPDATE_INTERVAL">PREF_UPDATE_INTERVAL</string>
+    <string name="PREF_MIN_MAGNITUDE">PREF_MIN_MAGNITUDE</string>
+    <string name="auto_refresh_summary">Update earthquakes automatically</string>
+    <string name="min_magnitude_filter_summary">Select the minimum magnitude earthquakes to be shown</string>
+    <string name="min_magnitude_dialog_title">Minimum earthquake magnitude</string>
+    <string name="refresh_frequency_dialog_title">Refresh frequency</string>
+    <string name="refresh_frequency_summary">Set the update frequency</string>
+    <string name="google_maps_key">AIzaSyCEvgIMhj7wRH1MqVNXu-jYY0V61aVaoa4</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_web_browser">Web Details</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="action_maps">View in Maps</string>
+    <string name="magnitude">Magnitude: %s</string>
+    <string name="depth">Depth: %s km</string>
+    <string name="listTab">List</string>
+    <string name="mapTab">Map</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="count_earthquakes">Update: %d earthquakes</string>
+</resources>

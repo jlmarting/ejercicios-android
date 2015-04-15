@@ -99,7 +99,7 @@ public class EarthQuakeListFragment extends ListFragment{
         super.onResume();
 
 
-        int minMag = Integer.parseInt(prefs.getString(getString(R.string.magnitude), "0"));
+        double minMag = Integer.parseInt(prefs.getString(getString(R.string.magnitude), "0"));
 
         earthQuakes.clear();
         earthQuakes.addAll(db.getAllByMagnitude(minMag));
