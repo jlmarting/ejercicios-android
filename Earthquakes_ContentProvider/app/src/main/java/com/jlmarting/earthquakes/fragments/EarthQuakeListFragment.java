@@ -1,8 +1,11 @@
 package com.jlmarting.earthquakes.fragments;
 
 import android.app.ListFragment;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import android.preference.PreferenceManager;
@@ -32,7 +35,8 @@ import java.util.ArrayList;
  * Activities containing this fragment MUST implement the {@ link OnFragmentInteractionListener}
  * interface.
  */
-public class EarthQuakeListFragment extends ListFragment {
+public class EarthQuakeListFragment extends ListFragment
+        implements LoaderManager.LoaderCallbacks<Cursor>{
 
     public static final String EQ_ID = "ID";
 
@@ -103,5 +107,20 @@ public class EarthQuakeListFragment extends ListFragment {
             getActivity().startService(download);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
