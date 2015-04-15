@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/earthquakes_refresh">
+        <!---Autorefresh yes/no-->
+        <SwitchPreference
+            android:key="@string/PREF_AUTO_UPDATE"
+            android:title="@string/auto_refresh"
+            android:summary="@string/auto_refresh_summary"
+            android:defaultValue="true">
+
+        </SwitchPreference>
+        <!---Refresh frequency-->
+        <ListPreference
+            android:dialogTitle="@string/refresh_frequency_dialog_title"
+            android:defaultValue="@integer/default_interval"
+            android:key="@string/PREF_UPDATE_INTERVAL"
+            android:title="@string/refresh_frequency"
+            android:summary="@string/refresh_frequency_summary"
+            android:entries="@array/update_freq_options"
+            android:entryValues="@array/update_freq_values"
+            android:dependency="@string/PREF_AUTO_UPDATE"
+            >
+        </ListPreference>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/earthquake_filter">
+        <!---Min. Magnitude-->
+        <ListPreference
+            android:dialogTitle="@string/min_magnitude_dialog_title"
+            android:defaultValue="0"
+            android:key="@string/PREF_MIN_MAGNITUDE"
+            android:title="@string/min_magnitude_filter"
+            android:summary="@string/min_magnitude_filter_summary"
+            android:entries="@array/magnitude_str"
+            android:entryValues="@array/magnitude">
+
+        </ListPreference>
+
+     </PreferenceCategory>
+</PreferenceScreen>
